@@ -31,7 +31,7 @@ The tool will convert '/' characters to '_' characters when looking up values. T
 
 You should be able to download a version of this tool from the releases section of this site. It should be ready to go for Linux based system.
 
-TODO(@ahamilton55: add an example of downloading and installing inside of a Docker container)
+Take a look at the `Dockerfile.example` file for an example of how to use the tool inside of your container.
 
 ## Usage
 

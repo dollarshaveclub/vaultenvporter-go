@@ -1,0 +1,20 @@
+FROM node:8.14.0-alpine
+
+# Version of vaultenvporter-go to download and install
+ENV VEP_VERSION 0.0.2
+
+# This can be set as part of the Helm charts for your app
+ENV VAULT_ADDR https://vault.shave.io:8200
+ENV VAULT_PREFIX secret/services/my-service/release/0
+
+# We need to add in the CA certificates to properly connect to Vault
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/* 
+
+# Download and add vaultenvporter-go-linux-amd64 to /usr/bin
+ADD https://github.com/dollarshaveclub/vaultenvporter-go/releases/download/$VEP_VERSION/vaultenvporter-go-linux-amd64 /usr/bin/vaultenvporter
+
+# By default, ADD will set permissions to 0600 so we need to make this executable
+RUN chmod +x /usr/bin/vaultenvporter
+
+# Replace "/bin/sh" with whatever you use to run your app
+CMD eval `/usr/bin/vaultenvporter --auth-method github --auth-token $GITHUB_TOKEN --vault-prefix $VAULT_PREFIX` && /bin/sh

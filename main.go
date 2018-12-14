@@ -17,48 +17,51 @@ import (
 const (
 	defaultRetries             = 5
 	defaultRole                = "demo"
-	defaultTimeoutMs           = 2000
 	defaultKubernetesTokenPath = "/var/run/secrets/kubernetes.io/serviceaccount"
 )
 
 var (
-	authMethod    string
-	authToken     string
-	retries       int
-	role          string
-	timeout       time.Duration
-	tokenPath     string
-	vaultAuthPath string
-	vaultAddr     string
-	vaultPrefix   string
+	defaultTimeout = 5000 * time.Microsecond
+	authMethod     string
+	authToken      string
+	retries        int
+	role           string
+	timeout        time.Duration
+	tokenPath      string
+	vaultAuthPath  string
+	vaultAddr      string
+	vaultK8sPath   string
+	vaultPrefix    string
 )
 
 func init() {
 	pflag.StringVar(&authMethod, "auth-method", "", "auth method to use for authenitcation")
 	pflag.StringVar(&authToken, "auth-token", "", "auth token to use with vault")
-	pflag.IntVar(&retries, "retries", defaultRetries, "number of retries")
 	pflag.StringVar(&role, "k8s-role", defaultRole, "k8s role to authentication against vault with")
-	pflag.DurationVar(&timeout, "vault-timeout", defaultTimeoutMs, "timeout for vault requests in milliseconds")
+	pflag.IntVar(&retries, "retries", defaultRetries, "number of retries")
 	pflag.StringVar(&tokenPath, "token-path", "", "path on the filesystem to find the JWT")
+	pflag.StringVar(&vaultK8sPath, "vault-k8s-path", vaultK8sPath, "path used to authenticate k8s tokens (e.g. auth/kube-uw2-110/auth)")
+	pflag.DurationVar(&timeout, "vault-timeout", defaultTimeout, "timeout for vault requests in milliseconds")
 	pflag.StringVar(&vaultAddr, "vault-addr", os.Getenv("VAULT_ADDR"), "address to access vault and should be a full URL")
-	pflag.StringVar(&vaultPrefix, "vault-prefix", "", "path in vault to begin looking for secrets")
+	pflag.StringVar(&vaultPrefix, "vault-prefix", os.Getenv("VAULT_PREFIX"), "path in vault to begin looking for secrets")
 
 	pflag.Parse()
 }
 
 func main() {
-
 	if vaultPrefix == "" {
 		log.Fatalf("a Vault prefix must be specified")
 	}
+
 	client, err := vault.NewClient(&vault.Config{
 		Address:    vaultAddr,
 		MaxRetries: retries,
-		Timeout:    timeout * time.Millisecond,
+		Timeout:    timeout,
 	})
 	if err != nil {
 		log.Fatalf("unable to connect to vault: %+v\n", err)
 	}
+
 	data := make(map[string]interface{})
 	fileToken := []byte{}
 	err = errors.New("")
@@ -89,7 +92,7 @@ func main() {
 
 	switch authMethod {
 	case "kubernetes":
-		vaultAuthPath = "auth/kube-uw2-110/login"
+		vaultAuthPath = vaultK8sPath
 		if authToken != "" {
 			t = authToken
 		} else {
@@ -126,7 +129,6 @@ func main() {
 		log.Fatal(err)
 		os.Exit(1)
 	}
-
 }
 
 func getSecrets(client *vault.Client, vPath, postfix string) error {
