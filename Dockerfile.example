@@ -1,7 +1,7 @@
 FROM node:8.14.0-alpine
 
 # Version of vaultenvporter-go to download and install
-ENV VEP_VERSION 0.0.2
+ENV VEP_VERSION v0.0.2
 
 # This can be set as part of the Helm charts for your app
 ENV VAULT_ADDR https://vault.shave.io:8200
