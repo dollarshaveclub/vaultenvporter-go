@@ -21,7 +21,7 @@ const (
 )
 
 var (
-	defaultTimeout = 5000 * time.Microsecond
+	defaultTimeout = 5000 * time.Millisecond
 	authMethod     string
 	authToken      string
 	retries        int
