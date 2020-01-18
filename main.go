@@ -173,8 +173,12 @@ func createEnvVar(client *vault.Client, vPath, postfix string) error {
 
 	if v, ok := secret.Data["value"]; ok {
 		envVar := fmt.Sprintf("%s", strings.ToUpper(strings.Replace(postfix, "/", "_", -1)))
-		fmt.Printf("export %s=%s\n", envVar, v.(string))
+		fmt.Printf("export %s=%s\n", envVar, escape(v.(string)))
 	}
 
 	return nil
+}
+
+func escape(s string) string {
+	return "'" + strings.Replace(s, "'", "'\"'\"", -1) + "'"
 }
