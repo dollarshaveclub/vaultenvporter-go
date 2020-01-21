@@ -78,7 +78,7 @@ require (
 	github.com/hashicorp/go-multierror v1.0.0 // indirect
 	github.com/hashicorp/go-plugin v0.0.0-20181212150838-f444068e8f5a // indirect
 	github.com/hashicorp/go-retryablehttp v0.5.0 // indirect
-	github.com/hashicorp/go-rootcerts v0.0.0-20160503143440-6bb64b370b90 // indirect
+	github.com/hashicorp/go-rootcerts v1.0.2 // indirect
 	github.com/hashicorp/go-sockaddr v0.0.0-20180320115054-6d291a969b86 // indirect
 	github.com/hashicorp/go-version v1.0.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
@@ -110,7 +110,6 @@ require (
 	github.com/michaelklishin/rabbit-hole v1.4.0 // indirect
 	github.com/miekg/dns v1.1.1 // indirect
 	github.com/mitchellh/copystructure v1.0.0 // indirect
-	github.com/mitchellh/go-homedir v1.0.0 // indirect
 	github.com/mitchellh/go-testing-interface v1.0.0 // indirect
 	github.com/mitchellh/hashstructure v1.0.0 // indirect
 	github.com/mitchellh/mapstructure v1.1.2 // indirect
@@ -170,3 +169,5 @@ require (
 	layeh.com/radius v0.0.0-20181129000116-83b1b1c7637c // indirect
 	sigs.k8s.io/yaml v1.1.0 // indirect
 )
+
+go 1.13
