@@ -138,8 +138,7 @@ func getSecrets(client *vault.Client, vPath, postfix string) error {
 	}
 
 	if secrets == nil || secrets.Data == nil {
-		createEnvVar(client, vPath, postfix)
-		return nil
+		return createEnvVar(client, vPath, postfix)
 	}
 
 	for name, secret := range secrets.Data {
