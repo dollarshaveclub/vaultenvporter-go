@@ -4,8 +4,8 @@ FROM node:8.14.0-alpine
 ENV VEP_VERSION v0.0.3
 
 # This can be set as part of the Helm charts for your app
-ENV VAULT_ADDR https://vault.shave.io:8200
-ENV VAULT_PREFIX secret/services/my-service/release/0
+ENV VAULT_ADDR https://{vault.address}:{port}
+ENV VAULT_PREFIX secret/services/<service>/<env>/0
 
 # We need to add in the CA certificates to properly connect to Vault
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/* 
